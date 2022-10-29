@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Draw S</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        cursor: pointer;
+        user-select: none;
+        font-family: "Courier New", Courier, monospace;
+        overflow: hidden;
+      }
+      canvas,
+      .title {
+        width: 100vw;
+        height: 100vh;
+      }
+      .title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        flex-direction: column;
+        color: #00000040;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">
+      <h4>Draw S</h4>
+      <p>click to draw amazing things</p>
+      <p>by joaquinmetayer</p>
+    </div>
+    <canvas id="canvas"></canvas>
+
+    <script>
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      let coord = { x: 0, y: 0 };
+
+      document.addEventListener("mousedown", start);
+      document.addEventListener("mouseup", stop);
+      window.addEventListener("resize", resize);
+
+      resize();
+
+      function resize() {
+        ctx.canvas.width = window.innerWidth;
+        ctx.canvas.height = window.innerHeight;
+      }
+      function reposition(event) {
+        coord.x = event.clientX - canvas.offsetLeft;
+        coord.y = event.clientY - canvas.offsetTop;
+      }
+      function start(event) {
+        document.addEventListener("mousemove", draw);
+        reposition(event);
+      }
+      function stop() {
+        document.removeEventListener("mousemove", draw);
+      }
+      function draw(event) {
+        ctx.beginPath();
+        ctx.lineWidth = 5;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "#000000";
+        ctx.moveTo(coord.x, coord.y);
+        reposition(event);
+        ctx.lineTo(coord.x, coord.y);
+        ctx.stroke();
+      }
+    </script>
+  </body>
+</html>
